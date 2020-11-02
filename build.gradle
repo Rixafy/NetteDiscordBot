@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.10'
+}
+
+apply plugin: 'java'
+
+group 'org.nette'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 8
+targetCompatibility = 8
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile 'net.dv8tion:JDA:4.2.0_214'
+    compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'org.nette.discordbot.DiscordBotKt'
+    }
+
+    from {
+        configurations
+            .compile
+            .findAll { !it.name.endsWith('pom') }
+            .collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
