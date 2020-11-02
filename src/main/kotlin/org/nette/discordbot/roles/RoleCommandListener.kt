@@ -125,7 +125,7 @@ class RoleCommandListener : ListenerAdapter() {
                     false
                 )
                 b.setFooter(
-                    "Bot is open-source, check out http://github.com/Rixafy/NetteDiscordBot",
+                    "Bot is open-source, check out https://github.com/Rixafy/NetteDiscordBot",
                     "https://i.imgur.com/UwiQZK1.png"
                 )
                 event.channel.sendMessage(b.build()).queue()
