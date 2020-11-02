@@ -6,6 +6,7 @@ import java.io.StringReader
 import java.net.URL
 import java.util.*
 import javax.xml.parsers.DocumentBuilderFactory
+import kotlin.concurrent.timerTask
 
 
 class StackOverflowChecker(private val jda: JDA) {
@@ -35,9 +36,8 @@ class StackOverflowChecker(private val jda: JDA) {
     }
 
     private fun runChecker() {
-        val timer = Timer()
-        val task = object : TimerTask() {
-            override fun run() {
+        Timer().schedule(
+            timerTask {
                 val urlText = URL("https://stackoverflow.com/feeds/tag?tagnames=nette&sort=newest").readText()
                 val xmlInput = InputSource(StringReader(urlText))
                 val doc = dBuilder.parse(xmlInput)
@@ -82,8 +82,7 @@ class StackOverflowChecker(private val jda: JDA) {
                         }
                     }
                 }
-            }
-        }
-        timer.schedule(task, 0, 10000)
+            }, 0, 10000
+        )
     }
 }
