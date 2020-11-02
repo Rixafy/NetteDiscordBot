@@ -131,18 +131,18 @@ class RoleCommandListener : ListenerAdapter() {
                 event.channel.sendMessage(b.build()).queue()
             }
         }
+
         val t = Thread(r)
         t.name = "Command Executor"
-        t.uncaughtExceptionHandler = object : Thread.UncaughtExceptionHandler {
-            override fun uncaughtException(t: Thread, e: Throwable) {
-                event.channel.sendMessage(
-                    """Exception occured in thread: ${t.name}(${t.id}) ${e.javaClass.name}: ${e.message}
-                            Check console for errors."""
-                )
-                    .queue()
-                e.printStackTrace()
-            }
+        t.uncaughtExceptionHandler = Thread.UncaughtExceptionHandler { thread, e ->
+            event.channel.sendMessage(
+                """Exception occured in thread: ${thread.name}(${thread.id}) ${e.javaClass.name}: ${e.message}
+                                Check console for errors."""
+            )
+                .queue()
+            e.printStackTrace()
         }
+
         t.start()
     }
 }
