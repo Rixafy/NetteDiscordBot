@@ -10,12 +10,13 @@ import kotlin.concurrent.timerTask
 
 
 class StackOverflowChecker(private val jda: JDA) {
+    private val url = "https://stackoverflow.com/feeds/tag?tagnames=nette&sort=newest";
     private val cachedQuestions = mutableListOf<String>()
     private val dbFactory = DocumentBuilderFactory.newInstance()
     private val dBuilder = dbFactory.newDocumentBuilder()
 
     init {
-        val urlText = URL("https://stackoverflow.com/feeds/tag?tagnames=nette&sort=newest").readText()
+        val urlText = URL(url).readText()
         val xmlInput = InputSource(StringReader(urlText))
         val doc = dBuilder.parse(xmlInput)
 
@@ -27,6 +28,7 @@ class StackOverflowChecker(private val jda: JDA) {
                     val value = entry.childNodes.item(k)
                     if (value.nodeName == "id") {
                         cachedQuestions.add(value.textContent)
+                        println("Cached stackoverflow question ${value.textContent}")
                     }
                 }
             }
@@ -38,7 +40,7 @@ class StackOverflowChecker(private val jda: JDA) {
     private fun runChecker() {
         Timer().schedule(
             timerTask {
-                val urlText = URL("https://stackoverflow.com/feeds/tag?tagnames=nette&sort=newest").readText()
+                val urlText = URL(url).readText()
                 val xmlInput = InputSource(StringReader(urlText))
                 val doc = dBuilder.parse(xmlInput)
 
@@ -82,7 +84,7 @@ class StackOverflowChecker(private val jda: JDA) {
                         }
                     }
                 }
-            }, 0, 10000
+            }, 0, 30000
         )
     }
 }

@@ -1,6 +1,7 @@
 package org.nette.discordbot
 
 import net.dv8tion.jda.api.JDABuilder
+import org.nette.discordbot.blog.BlogChecker
 import org.nette.discordbot.roles.RoleCommandListener
 import org.nette.discordbot.stackoverflow.StackOverflowChecker
 
@@ -12,4 +13,5 @@ fun main(args: Array<String>) {
     jda.awaitReady()
 
     StackOverflowChecker(jda)
+    BlogChecker(jda)
 }
