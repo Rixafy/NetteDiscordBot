@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import java.awt.Color
+import kotlin.concurrent.thread
 
 class RoleCommandListener : ListenerAdapter() {
     override fun onGuildMessageReceived(event: GuildMessageReceivedEvent) {
@@ -19,13 +20,13 @@ class RoleCommandListener : ListenerAdapter() {
         val command: String = args[0].replace(".", "")
         args.removeFirst()
 
-        val r = Runnable {
+        val t = thread {
             if (command.equals("addlang", true)) {
                 if (args.isEmpty()) {
                     event.channel.sendMessage(
                         "${member.asMention}, arguments are missing, example usage is `.addlang php nette javascript`."
                     ).queue()
-                    return@Runnable
+                    return@thread
                 }
 
                 val rolesGiven = mutableListOf<String>()
@@ -61,7 +62,7 @@ class RoleCommandListener : ListenerAdapter() {
                     event.channel.sendMessage(
                         "${member.asMention}, arguments are missing, example usage is `.remlang symfony`."
                     ).queue()
-                    return@Runnable
+                    return@thread
                 }
                 val currentRoles =
                     member.roles.filter { !it.isHoisted && !it.permissions.contains(Permission.ADMINISTRATOR) && !it.name.contains(
@@ -132,7 +133,6 @@ class RoleCommandListener : ListenerAdapter() {
             }
         }
 
-        val t = Thread(r)
         t.name = "Command Executor"
         t.uncaughtExceptionHandler = Thread.UncaughtExceptionHandler { thread, e ->
             event.channel.sendMessage(
