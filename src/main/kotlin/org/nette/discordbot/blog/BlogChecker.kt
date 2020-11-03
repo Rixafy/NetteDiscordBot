@@ -63,7 +63,7 @@ class BlogChecker(private val jda: JDA) {
 
                     val announcementsChannel = jda.getTextChannelById(772230018515992607)
                     announcementsChannel?.sendMessage(
-                        "New article was just published! $link"
+                        "New article was just published! $link @everyone"
                     )?.queue()
                 }
             }, 10000, 30000
