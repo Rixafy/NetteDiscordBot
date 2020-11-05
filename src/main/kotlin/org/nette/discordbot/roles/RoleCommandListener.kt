@@ -20,7 +20,7 @@ class RoleCommandListener : ListenerAdapter() {
         val command: String = args[0].replace(".", "")
         args.removeFirst()
 
-        val t = thread {
+        val t = thread(start = false) {
             if (command.equals("addlang", true)) {
                 if (args.isEmpty()) {
                     event.channel.sendMessage(
