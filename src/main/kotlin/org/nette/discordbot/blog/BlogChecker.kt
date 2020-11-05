@@ -1,6 +1,7 @@
 package org.nette.discordbot.blog
 
 import net.dv8tion.jda.api.JDA
+import org.nette.discordbot.consoleLog
 import org.xml.sax.InputSource
 import java.io.StringReader
 import java.net.URL
@@ -26,7 +27,7 @@ class BlogChecker(private val jda: JDA) {
                 val value = entry.childNodes.item(k)
                 if (value.nodeName == "link") {
                     cachedArticles.add(value.textContent)
-                    println("Cached blog post ${value.textContent}")
+                    "Cached article ${value.textContent}".consoleLog()
                 }
             }
         }
@@ -58,7 +59,7 @@ class BlogChecker(private val jda: JDA) {
 
                     } else {
                         cachedArticles.add(link)
-                        println("Cached article $link")
+                        "New article found! $link".consoleLog()
                     }
 
                     val announcementsChannel = jda.getTextChannelById(772230018515992607)

@@ -1,13 +1,13 @@
 package org.nette.discordbot.stackoverflow
 
 import net.dv8tion.jda.api.JDA
+import org.nette.discordbot.consoleLog
 import org.xml.sax.InputSource
 import java.io.StringReader
 import java.net.URL
 import java.util.*
 import javax.xml.parsers.DocumentBuilderFactory
 import kotlin.concurrent.timerTask
-
 
 class StackOverflowChecker(private val jda: JDA) {
     private val url = "https://stackoverflow.com/feeds/tag?tagnames=nette&sort=newest";
@@ -28,7 +28,7 @@ class StackOverflowChecker(private val jda: JDA) {
                     val value = entry.childNodes.item(k)
                     if (value.nodeName == "id") {
                         cachedQuestions.add(value.textContent)
-                        println("Cached stackoverflow question ${value.textContent}")
+                        "Cached stackoverflow question ${value.textContent}".consoleLog()
                     }
                 }
             }
@@ -62,6 +62,7 @@ class StackOverflowChecker(private val jda: JDA) {
                                 continue
                             } else {
                                 cachedQuestions.add(url)
+                                "New stackoverflow question found! $url".consoleLog()
                             }
 
                             var author: String? = null

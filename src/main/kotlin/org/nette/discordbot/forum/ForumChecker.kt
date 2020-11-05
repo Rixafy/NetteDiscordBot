@@ -1,6 +1,7 @@
 package org.nette.discordbot.forum
 
 import net.dv8tion.jda.api.JDA
+import org.nette.discordbot.consoleLog
 import org.xml.sax.InputSource
 import java.io.StringReader
 import java.net.URL
@@ -26,7 +27,7 @@ class ForumChecker(private val jda: JDA) {
                 val value = entry.childNodes.item(k)
                 if (value.nodeName == "link") {
                     cachedThreads.add(value.textContent)
-                    println("Cached thread ${value.textContent}")
+                    "Cached forum thread ${value.textContent}".consoleLog()
                 }
             }
         }
@@ -60,7 +61,7 @@ class ForumChecker(private val jda: JDA) {
 
                     } else {
                         cachedThreads.add(link)
-                        println("Cached thread $link")
+                        "New forum thread found! $link".consoleLog()
                     }
 
                     for (k in 0 until entry.childNodes.length) {

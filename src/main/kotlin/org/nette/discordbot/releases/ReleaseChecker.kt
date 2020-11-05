@@ -1,6 +1,7 @@
 package org.nette.discordbot.releases
 
 import net.dv8tion.jda.api.JDA
+import org.nette.discordbot.consoleLog
 import org.xml.sax.InputSource
 import java.io.StringReader
 import java.net.URL
@@ -26,7 +27,7 @@ class ReleaseChecker(private val jda: JDA) {
                 val value = entry.childNodes.item(k)
                 if (value.nodeName == "link") {
                     cachedReleases.add(value.textContent)
-                    println("Cached release ${value.textContent}")
+                    "Cached release ${value.textContent}".consoleLog()
                 }
             }
         }
@@ -59,7 +60,7 @@ class ReleaseChecker(private val jda: JDA) {
 
                     } else {
                         cachedReleases.add(link)
-                        println("Cached release $link")
+                        "New release found! $link".consoleLog()
                     }
 
                     for (k in 0 until entry.childNodes.length) {
