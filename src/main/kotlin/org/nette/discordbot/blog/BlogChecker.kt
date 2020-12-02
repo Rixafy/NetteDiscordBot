@@ -27,7 +27,7 @@ class BlogChecker(private val jda: JDA) {
             val entry = items.item(j)
             for (k in 0 until entry.childNodes.length) {
                 val value = entry.childNodes.item(k)
-                if (value.nodeName == "link") {
+                if (value.nodeName == "guid") {
                     cachedArticles.add(value.textContent)
                     "Cached article ${value.textContent}".consoleLog()
                 }
@@ -47,20 +47,23 @@ class BlogChecker(private val jda: JDA) {
             for (j in 0 until items.length) {
                 val entry = items.item(j)
                 var link: String? = null
+                var guid: String? = null
 
                 for (k in 0 until entry.childNodes.length) {
                     val value = entry.childNodes.item(k)
                     if (value.nodeName == "link") {
                         link = value.textContent
+                    } else if (value.nodeName == "guid") {
+                        guid = value.textContent
                     }
                 }
 
-                if (link == null || cachedArticles.contains(link)) {
+                if (guid == null || cachedArticles.contains(guid)) {
                     continue
 
                 } else {
-                    cachedArticles.add(link)
-                    "New article found! $link".consoleLog()
+                    cachedArticles.add(guid)
+                    "New article found! $guid".consoleLog()
                 }
 
                 val announcementsChannel = jda.getTextChannelById(772230018515992607)
