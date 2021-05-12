@@ -92,19 +92,15 @@ class RoleCommandListener : ListenerAdapter() {
                 }
 
             } else if (command.equals("langs", true) || command.equals("languages", true)) {
-                val roles = event.guild.roles.filterNotNull()
-                    .filter {
-                        !it.isHoisted && !it.permissions.contains(Permission.ADMINISTRATOR) && !it.name.contains(
-                            "everyone",
-                            true
-                        )
-                    }
-                val availableRoles = mutableListOf<String>()
-
-                roles.forEach { availableRoles.add(it.name) }
+                val roles = event.guild.roles.filterNotNull().filter {
+                    !it.isHoisted && !it.permissions.contains(Permission.ADMINISTRATOR) && !it.name.contains(
+                        "everyone",
+                        true
+                    )
+                }.map { it.name }
 
                 event.channel.sendMessage(
-                    "${member.asMention}, you can choose following languages/frameworks/technologies: \n**${availableRoles.joinToString(
+                    "${member.asMention}, you can choose following languages/frameworks/technologies: \n**${roles.joinToString(
                         "**, **"
                     )}**"
                 ).queue()
